@@ -19,7 +19,7 @@ export const login = async (
     setAuthTokens(exchangeTokenResponse);
 
     if (exchangeTokenResponse) {
-      router.push("/welcome");
+      router.push("/get-started");
     }
   } catch (error) {
     console.error(error);

@@ -1,0 +1,40 @@
+import React from 'react';
+import { Pressable, Text, StyleSheet } from 'react-native';
+import { Link, LinkProps } from 'expo-router';
+import Colors from "@/constants/Colors";
+import fonts from "@/constants/Font";
+import { useColorScheme } from "@/components/useColorScheme";
+
+interface ButtonProps {
+  href: LinkProps["href"];
+  title: string;
+  forcedColorScheme?: "light" | "dark";
+}
+
+export default function Button({ href, title, forcedColorScheme }: ButtonProps) {
+  const colorScheme = forcedColorScheme ?? useColorScheme();
+  return (
+    <Pressable style={[styles.button, { backgroundColor: Colors[colorScheme ?? "light"].primary }]}>
+      <Link href={ href }>
+        <Text style={[styles.buttonText, { color: colorScheme === "light" ? 'black' : 'white' }]}>{title}</Text>
+      </Link>
+    </Pressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  button: {
+    width: "100%",
+    borderRadius: 10,
+    padding: 16,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 20,
+  },
+  buttonText: {
+    fontSize: fonts.fontSize.md,
+    fontWeight: "bold",
+    color: "black",
+    textAlign: "center"
+  },
+}); 
