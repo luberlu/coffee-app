@@ -1,7 +1,7 @@
 import { Alert } from "react-native";
 import { router } from "expo-router";
 import { exchangeCodeAsync } from "expo-auth-session";
-import { AuthTokens } from '../contexts/AuthContext';
+import { AuthTokens, SetAuthTokens } from '../contexts/AuthContext';
 
 const clientId = `${process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID}`;
 const userPoolUrl = `https://${process.env.EXPO_PUBLIC_COGNITO_USER_POOL_DOMAIN}`;
@@ -9,7 +9,7 @@ const userPoolUrl = `https://${process.env.EXPO_PUBLIC_COGNITO_USER_POOL_DOMAIN}
 export const login = async (
   exchangeTokenReq: any,
   discoveryDocument: any,
-  setAuthTokens: (tokens: AuthTokens | null) => void
+  setAuthTokens: SetAuthTokens
 ) => {
   try {
     const exchangeTokenResponse = await exchangeCodeAsync(
@@ -28,7 +28,7 @@ export const login = async (
 
 export const logout = async (
   authTokens: AuthTokens | null,
-  setAuthTokens: (tokens: AuthTokens | null) => void,
+  setAuthTokens: SetAuthTokens,
   callback: () => void
 ) => {
   try {

@@ -1,18 +1,19 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { TokenResponse } from 'expo-auth-session';
 
-export type AuthTokens = TokenResponse
+export type AuthTokens = TokenResponse | null;
+export type SetAuthTokens = (tokens: AuthTokens) => void;
 
 export interface AuthContextType {
-  authTokens: TokenResponse | null;
-  setAuthTokens: (tokens: TokenResponse | null) => void;
+  authTokens: AuthTokens;
+  setAuthTokens: SetAuthTokens;
   isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [authTokens, setAuthTokens] = useState<TokenResponse | null>(null);
+  const [authTokens, setAuthTokens] = useState<AuthTokens>(null);
 
   const value = {
     authTokens,
