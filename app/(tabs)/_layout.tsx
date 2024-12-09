@@ -6,13 +6,35 @@ import { Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
+  focused: boolean;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+
+  const rotate = useSharedValue(0);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotate.value}deg` }],
+  }));
+
+  React.useEffect(() => {
+    if (props.focused) {
+      rotate.value = withSpring(rotate.value + 180, {
+        damping: 10,
+        stiffness: 100
+      });
+    }
+  });
+
+  return (
+    <Animated.View style={animatedStyles}>
+      <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />
+    </Animated.View>
+  );
 }
 
 export default function TabLayout() {
@@ -29,29 +51,39 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          tabBarStyle: {
+            backgroundColor: 'red',
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          },
           title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="code" color={color} focused={focused} />,
           headerRight: () => (
             <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
+                <Pressable>
+                  {({ pressed }) => (
                   <FontAwesome
                     name="info-circle"
                     size={25}
                     color={Colors[colorScheme ?? 'light'].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
       <Tabs.Screen
         name="two"
         options={{
           title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarStyle: {
+            backgroundColor: 'green',
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          },
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="code" color={color} focused={focused} />,
         }}
       />
     </Tabs>
