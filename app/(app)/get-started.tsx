@@ -9,218 +9,67 @@ import Animated, {
   SharedValue,
   Easing,
   withDelay,
+  withSequence,
 } from "react-native-reanimated";
 import React from "react";
 import AnimatedOuter from "@/components/AnimatedOuter";
 
-interface AnimationValues {
-  [key: string]: number;
-}
-
-interface AnimationConfig {
-  values: {[key: string]: SharedValue<number>};
-  timing: {
-    duration: number;
-    easing: (value: number) => number;
-  };
-  outTiming: {
-    duration: number;
-    easing: (value: number) => number;
-  };
-  in: AnimationValues & { delay: number };
-  out: AnimationValues & { delay: number };
-}
-
-const createAnimationConfig = (type: 'image' | 'title' | 'text' | 'button'): AnimationConfig => {
-  const configs = {
-    image: {
-      initial: {
-        translateY: 0,
-        opacity: 0,
-        scale: 1.1,
-      },
-      in: {
-        translateY: 0,
-        opacity: 1,
-        scale: 1,
-        delay: 0,
-      },
-      out: {
-        translateY: 0,
-        opacity: 0,
-        scale: 1.1,
-        delay: 0,
-      },
-      timing: {
-        duration: 800,
-        easing: Easing.linear,
-      },
-      outTiming: {
-        duration: 300,
-        easing: Easing.ease,
-      },
-    },
-    title: {
-      initial: {
-        translateY: 10,
-        opacity: 0,
-        scale: 1,
-      },
-      in: {
-        translateY: 0,
-        opacity: 1,
-        scale: 1,
-        delay: 200,
-      },
-      out: {
-        translateY: 0,
-        opacity: 0,
-        scale: 1,
-        delay: 100,
-      },
-      timing: {
-        duration: 800,
-        easing: Easing.ease,
-      },
-      outTiming: {
-        duration: 300,
-        easing: Easing.ease,
-      },
-    },
-    text: {
-      initial: {
-        translateY: 10,
-        opacity: 0,
-        scale: 1,
-      },
-      in: {
-        translateY: 0,
-        opacity: 1,
-        scale: 1,
-        delay: 400,
-      },
-      out: {
-        translateY: 0,
-        opacity: 0,
-        scale: 1,
-        delay: 200,
-      },
-      timing: {
-        duration: 800,
-        easing: Easing.ease,
-      },
-      outTiming: {
-        duration: 300,
-        easing: Easing.ease,
-      },
-    },
-    button: {
-      initial: {
-        translateY: 10,
-        opacity: 0,
-        scale: 1,
-      },
-      in: {
-        translateY: 0,
-        opacity: 1,
-        scale: 1,
-        delay: 800,
-      },
-      out: {
-        translateY: 0,
-        opacity: 0,
-        scale: 1,
-        delay: 400,
-      },
-      timing: {
-        duration: 800,
-        easing: Easing.ease,
-      },
-      outTiming: {
-        duration: 300,
-        easing: Easing.ease,
-      },
-    },
-  };
-
-  const config = configs[type];
-  const values: {[key: string]: SharedValue<number>} = {};
-  
-  Object.entries(config.initial).forEach(([key, value]) => {
-    values[key] = useSharedValue(value);
-  });
-
-  return {
-    values,
-    in: { ...config.in },
-    out: { ...config.out },
-    timing: config.timing,
-    outTiming: config.outTiming,
-  };
-};
-
-const animateValues = (
-  values: {[key: string]: SharedValue<number>},
-  targetValues: AnimationValues,
-  timing: { duration: number; easing: (value: number) => number },
-  delay: number = 0
-) => {
-  Object.entries(values).forEach(([key, sharedValue]) => {
-    if (key in targetValues) {
-      sharedValue.value = withDelay(
-        delay,
-        withTiming(targetValues[key], {
-          duration: timing.duration,
-          easing: timing.easing,
-        })
-      );
-    }
-  });
-};
-
-const createAnimatedStyle = (config: AnimationConfig) => {
-  return useAnimatedStyle(() => ({
-    transform: [
-      { translateY: config.values.translateY.value },
-      { scale: config.values.scale.value }
-    ],
-    opacity: config.values.opacity.value,
-  }));
-};
 
 export default function GetStarted() {
-  const animations = {
-    image: createAnimationConfig('image'),
-    title: createAnimationConfig('title'),
-    text: createAnimationConfig('text'),
-    button: createAnimationConfig('button'),
+  const imageValues = {
+    opacity: useSharedValue(0),
+    scale: useSharedValue(1.1),
+  };
+
+  const titleValues = {
+    translateY: useSharedValue(10),
+    opacity: useSharedValue(0),
+  };
+
+  const textValues = {
+    translateY: useSharedValue(10),
+    opacity: useSharedValue(0),
+  };
+
+  const buttonValues = {
+    translateY: useSharedValue(10),
+    opacity: useSharedValue(0),
+  };
+
+  const createAnimatedStyle = (values: {[key: string]: SharedValue<number>}) => {
+    return useAnimatedStyle(() => {
+      const transform = [];
+      
+      if ('translateY' in values) {
+        transform.push({ translateY: values.translateY.value });
+      }
+      
+      if ('scale' in values) {
+        transform.push({ scale: values.scale.value });
+      }
+
+      return {
+        transform,
+        opacity: 'opacity' in values ? values.opacity.value : 1,
+      };
+    });
   };
 
   const styles = {
-    image: createAnimatedStyle(animations.image),
-    title: createAnimatedStyle(animations.title),
-    text: createAnimatedStyle(animations.text),
-    button: createAnimatedStyle(animations.button),
+    image: createAnimatedStyle(imageValues),
+    title: createAnimatedStyle(titleValues),
+    text: createAnimatedStyle(textValues),
+    button: createAnimatedStyle(buttonValues),
   };
 
-  const animateIn = ({
-    values,
-    in: inValues,
-    timing,
-  }: AnimationConfig) => {
-    animateValues(values, inValues, timing, inValues.delay);
-  };
-
-  const animateOut = ({
-    values,
-    out,
-    outTiming,
-  }: AnimationConfig) => {
-    animateValues(values, out, outTiming, out.delay);
-  };
-
+  // Initial animation
   React.useEffect(() => {
-    Object.values(animations).forEach(animateIn);
+    setTimeout(() => {
+      animateImageIn(imageValues);
+      animateTitleIn(titleValues);
+      animateTextIn(textValues);
+      animateButtonIn(buttonValues);
+    }, 600);
   }, []);
 
   return (
@@ -267,11 +116,12 @@ export default function GetStarted() {
             href="/(app)/(tabs)"
             title="Get started"
             onBeforeNavigation={async () => {
-              const maxDelay = Math.max(...Object.values(animations).map(config => config.out.delay));
-              const maxDuration = Math.max(...Object.values(animations).map(config => config.outTiming.duration));
-              
-              Object.values(animations).forEach((config) => animateOut(config));
-              await new Promise((resolve) => setTimeout(resolve, maxDelay + maxDuration));
+              animateImageOut(imageValues);
+              animateTitleOut(titleValues);
+              animateTextOut(textValues);
+              animateButtonOut(buttonValues);
+
+              await new Promise((resolve) => setTimeout(resolve, 700));
             }}
           />
         </Animated.View>
@@ -279,3 +129,96 @@ export default function GetStarted() {
     </View>
   );
 }
+
+// Animation functions for Image
+const animateImageIn = (values: {[key: string]: SharedValue<number>}) => {
+  values.opacity.value = withDelay(0, withTiming(1, {
+    duration: 1000,
+    easing: Easing.out(Easing.quad)
+  }));
+  values.scale.value = withDelay(0, withTiming(1, {
+    duration: 800,
+    easing: Easing.out(Easing.quad)
+  }));
+};
+
+const animateImageOut = (values: {[key: string]: SharedValue<number>}) => {
+  values.opacity.value = withDelay(0, withTiming(0, {
+    duration: 200,
+    easing: Easing.ease
+  }));
+  values.scale.value = withDelay(0, withTiming(1.1, {
+    duration: 300,
+    easing: Easing.ease
+  }));
+};
+
+// Animation functions for Title
+const animateTitleIn = (values: {[key: string]: SharedValue<number>}) => {
+  values.translateY.value = withDelay(800, withTiming(0, {
+    duration: 600,
+    easing: Easing.out(Easing.quad)
+  }));
+  values.opacity.value = withDelay(800, withTiming(1, {
+    duration: 600,
+    easing: Easing.out(Easing.quad)
+  }));
+};
+
+const animateTitleOut = (values: {[key: string]: SharedValue<number>}) => {
+  values.translateY.value = withDelay(100, withTiming(0, {
+    duration: 200,
+    easing: Easing.ease
+  }));
+  values.opacity.value = withDelay(100, withTiming(0, {
+    duration: 200,
+    easing: Easing.ease
+  }));
+};
+
+// Animation functions for Text
+const animateTextIn = (values: {[key: string]: SharedValue<number>}) => {
+  values.translateY.value = withDelay(900, withTiming(0, {
+    duration: 600,
+    easing: Easing.out(Easing.quad)
+  }));
+  values.opacity.value = withDelay(900, withTiming(1, {
+    duration: 600,
+    easing: Easing.out(Easing.quad)
+  }));
+};
+
+const animateTextOut = (values: {[key: string]: SharedValue<number>}) => {
+  values.translateY.value = withDelay(200, withTiming(0, {
+    duration: 300,
+    easing: Easing.ease
+  }));
+  values.opacity.value = withDelay(200, withTiming(0, {
+    duration: 200,
+    easing: Easing.ease
+  }));
+};
+
+// Animation functions for Button
+const animateButtonIn = (values: {[key: string]: SharedValue<number>}) => {
+  values.translateY.value = withDelay(1100, withTiming(0, {
+    duration: 500,
+    easing: Easing.out(Easing.quad)
+  }));
+  values.opacity.value = withDelay(1100, withTiming(1, {
+    duration: 500,
+    easing: Easing.out(Easing.quad)
+  }));
+
+};
+
+const animateButtonOut = (values: {[key: string]: SharedValue<number>}) => {
+  values.translateY.value = withDelay(400, withTiming(0, {
+    duration: 300,
+    easing: Easing.ease
+  }));
+  values.opacity.value = withDelay(400, withTiming(0, {
+    duration: 200,
+    easing: Easing.ease
+  }));
+};
