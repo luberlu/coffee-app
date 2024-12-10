@@ -9,7 +9,7 @@ interface ButtonProps {
   href: LinkProps["href"];
   title: string;
   forcedColorScheme?: "light" | "dark";
-  onBeforeNavigation?: () => Promise<unknown>;
+  onBeforeNavigation?: () => Promise<undefined>;
 }
 
 export default function Button({ 

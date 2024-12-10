@@ -9,6 +9,7 @@ const clientId = `${process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID}`;
 const userPoolUrl = `https://${process.env.EXPO_PUBLIC_COGNITO_USER_POOL_DOMAIN}`;
 /** needs to be setup in aws cognito */
 const redirectUri = Linking.createURL("/welcome");
+console.log("redirectUri", redirectUri);
 
 export default function SignIn() {
   const { setAuthTokens } = useAuth();

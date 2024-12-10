@@ -5,6 +5,7 @@ import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { Asset } from 'expo-asset';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -27,6 +28,14 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+
+  useEffect(() => {
+    // Préchargement des images
+    Asset.loadAsync([
+      require("@/assets/images/app/coffee1.png"),
+      // Ajoutez ici d'autres images à précharger
+    ]);
+  }, []);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

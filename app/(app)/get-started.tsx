@@ -9,25 +9,7 @@ import Animated, {
   SharedValue,
 } from "react-native-reanimated";
 import React from "react";
-import { ViewProps, ViewStyle, View as RNView, TextStyle } from "react-native";
-
-const AnimatedTextOuter = React.forwardRef<
-  typeof RNView,
-  ViewProps & { 
-    children?: React.ReactNode; 
-    style?: ViewStyle | TextStyle;
-    animatedStyle?: ViewStyle | TextStyle;
-  }
->((props, ref) => {
-  const { style, animatedStyle, children, ...otherProps } = props;
-  return (
-    <Animated.View ref={ref as React.Ref<Animated.View>} style={animatedStyle as ViewStyle} {...otherProps}>
-      <Text style={style as TextStyle}>{children}</Text>
-    </Animated.View>
-  );
-});
-
-AnimatedTextOuter.displayName = "AnimatedTextOuter";
+import AnimatedOuter from "@/components/AnimatedOuter";
 
 interface AnimationConfig {
   translateY: SharedValue<number>;
@@ -46,78 +28,136 @@ interface AnimationConfig {
   };
 }
 
-export default function GetStarted() {
-    const reanim = false;
-  const AnimatedText = Animated.createAnimatedComponent(AnimatedTextOuter);
-  const animations: Record<'image' | 'title' | 'text' | 'button', AnimationConfig> = {
+const createAnimationConfig = (type: 'image' | 'title' | 'text' | 'button'): AnimationConfig => {
+  const configs = {
     image: {
-      translateY: useSharedValue(0),
-      opacity: useSharedValue(0),
-      scale: useSharedValue(1),
-      delay: 300,
+      initial: {
+        translateY: 0,
+        opacity: 0,
+        scale: 1.2,
+      },
       in: {
         translateY: 0,
         opacity: 1,
-        scale: 1
+        scale: 1,
       },
       out: {
         translateY: 0,
         opacity: 0,
-        scale: 1.1
-      }
+        scale: 1.1,
+      },
+      delay: 0,
     },
     title: {
-      translateY: useSharedValue(20),
-      opacity: useSharedValue(0),
-      scale: useSharedValue(1),
-      delay: 400,
+      initial: {
+        translateY: 20,
+        opacity: 0,
+        scale: 1,
+      },
       in: {
         translateY: 0,
         opacity: 1,
-        scale: 1
+        scale: 1,
       },
       out: {
         translateY: 0,
         opacity: 0,
-        scale: 1
-      }
+        scale: 1,
+      },
+      delay: 400,
     },
     text: {
-      translateY: useSharedValue(20),
-      opacity: useSharedValue(0),
-      scale: useSharedValue(1),
-      delay: 500,
+      initial: {
+        translateY: 20,
+        opacity: 0,
+        scale: 1,
+      },
       in: {
         translateY: 0,
         opacity: 1,
-        scale: 1
+        scale: 1,
       },
       out: {
         translateY: 0,
         opacity: 0,
-        scale: 1
-      }
+        scale: 1,
+      },
+      delay: 500,
     },
     button: {
-      translateY: useSharedValue(20),
-      opacity: useSharedValue(0),
-      scale: useSharedValue(1),
-      delay: 600,
+      initial: {
+        translateY: 20,
+        opacity: 0,
+        scale: 1,
+      },
       in: {
         translateY: 0,
         opacity: 1,
-        scale: 1
+        scale: 1,
       },
       out: {
         translateY: 0,
         opacity: 0,
-        scale: 1
-      }
-    }
+        scale: 1,
+      },
+      delay: 600,
+    },
+  };
+
+  const config = configs[type];
+  return {
+    translateY: useSharedValue(config.initial.translateY),
+    opacity: useSharedValue(config.initial.opacity),
+    scale: useSharedValue(config.initial.scale),
+    delay: config.delay,
+    in: config.in,
+    out: config.out,
+  };
+};
+
+const createAnimatedStyle = (type: 'image' | 'title' | 'text' | 'button', config: AnimationConfig) => {
+  if (type === 'image') {
+    return useAnimatedStyle(() => ({
+      transform: [
+        { translateY: config.translateY.value },
+        { scale: config.scale.value }
+      ],
+      opacity: config.opacity.value,
+    }));
+  }
+
+  return useAnimatedStyle(() => ({
+    transform: [
+      { translateY: config.translateY.value },
+      { scale: config.scale.value }
+    ],
+    opacity: config.opacity.value,
+  }));
+};
+
+export default function GetStarted() {
+  const animations = {
+    image: createAnimationConfig('image'),
+    title: createAnimationConfig('title'),
+    text: createAnimationConfig('text'),
+    button: createAnimationConfig('button'),
+  };
+
+  const styles = {
+    image: createAnimatedStyle('image', animations.image),
+    title: createAnimatedStyle('title', animations.title),
+    text: createAnimatedStyle('text', animations.text),
+    button: createAnimatedStyle('button', animations.button),
   };
 
   React.useEffect(() => {
-    const animateElement = ({ translateY, opacity, scale, delay, in: inValues }: AnimationConfig) => {
+    const animateElement = ({
+      translateY,
+      opacity,
+      scale,
+      delay,
+      in: inValues,
+    }: AnimationConfig) => {
       setTimeout(() => {
         translateY.value = withTiming(inValues.translateY, { duration: 600 });
         opacity.value = withTiming(inValues.opacity, { duration: 600 });
@@ -126,34 +166,17 @@ export default function GetStarted() {
     };
 
     Object.values(animations).forEach(animateElement);
-  }, [reanim]);
-
-  const createAnimatedStyle = ({ translateY, opacity, scale }: Omit<AnimationConfig, 'delay'>) =>
-    useAnimatedStyle(() => ({
-      transform: [
-        { translateY: translateY.value },
-        { scale: scale.value }
-      ],
-      opacity: opacity.value,
-    }));
-
-  const styles = {
-    image: createAnimatedStyle(animations.image),
-    title: createAnimatedStyle(animations.title),
-    text: createAnimatedStyle(animations.text),
-    button: createAnimatedStyle(animations.button),
-  };
-
-  if(reanim) {
-    return null;
-  }
+  }, []);
 
   return (
     <View style={{ flex: 1, justifyContent: "flex-end", alignItems: "center" }}>
       <Animated.Image
-          source={require("@/assets/images/app/coffee1.png")}
-          style={[{ width: "100%", height: "70%", position: "absolute", top: 0 }, styles.image]}
-          resizeMode="cover"
+        source={require("@/assets/images/app/coffee1.png")}
+        style={[
+          { width: "100%", height: "70%", position: "absolute", top: 0, transform: [{ scale: 1 }] },
+          styles.image,
+        ]}
+        resizeMode="cover"
       />
       <Animated.View
         style={[
@@ -165,46 +188,45 @@ export default function GetStarted() {
           },
         ]}
       >
-        <AnimatedText
-          style={tokens.title}
-          animatedStyle={styles.title}
-        >
-          Fall in Love with{"\n"}
-          Coffee in Blissful{"\n"}
-          Delight!
-        </AnimatedText>
-        <AnimatedText
-          style={{
-            fontSize: fonts.fontSize.sm,
-            color: Colors.dark.quaternary,
-            textAlign: "center",
-          } as ViewStyle}
-          animatedStyle={styles.text}
-        >
-          Welcome to our cozy coffee corner, where{"\n"}
-          every cup is a delightful for you.
-        </AnimatedText>
+        <AnimatedOuter animatedStyle={styles.title}>
+          <Text style={tokens.title}>
+            Fall in Love with{"\n"}
+            Coffee in Blissful{"\n"}
+            Delight!
+          </Text>
+        </AnimatedOuter>
+        <AnimatedOuter animatedStyle={styles.text}>
+          <Text
+            style={{
+              fontSize: fonts.fontSize.sm,
+              color: Colors.dark.quaternary,
+              textAlign: "center",
+            }}
+          >
+            Welcome to our cozy coffee corner, where{"\n"}
+            every cup is a delightful for you.
+          </Text>
+        </AnimatedOuter>
         <Animated.View style={styles.button}>
-          <Button 
-            href="/(app)/(tabs)" 
-            title="Get started" 
+          <Button
+            href="/(app)/(tabs)"
+            title="Get started"
             onBeforeNavigation={async () => {
-              return new Promise(resolve => {
-                Object.values(animations).forEach(({ translateY, opacity, scale, delay, out }) => {
-                  setTimeout(() => {
-                    translateY.value = withTiming(out.translateY, {
-                      duration: 300,
-                    });
-                    opacity.value = withTiming(out.opacity, {
-                      duration: 300,
-                    });
-                    scale.value = withTiming(out.scale, {
-                      duration: 300,
-                    });
-                  }, delay);
+              const animateOut = ({
+                translateY,
+                opacity,
+                scale,
+                out,
+              }: AnimationConfig) => {
+                translateY.value = withTiming(out.translateY, {
+                  duration: 300,
                 });
-                setTimeout(resolve, 1000);
-              });
+                opacity.value = withTiming(out.opacity, { duration: 300 });
+                scale.value = withTiming(out.scale, { duration: 300 });
+              };
+
+              Object.values(animations).forEach(animateOut);
+              await new Promise((resolve) => setTimeout(resolve, 1000));
             }}
           />
         </Animated.View>
