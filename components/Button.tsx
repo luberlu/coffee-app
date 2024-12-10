@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
-import { Link, LinkProps } from 'expo-router';
+import { Link, LinkProps, router } from 'expo-router';
 import Colors from "@/constants/Colors";
 import fonts from "@/constants/Font";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -9,15 +9,32 @@ interface ButtonProps {
   href: LinkProps["href"];
   title: string;
   forcedColorScheme?: "light" | "dark";
+  onBeforeNavigation?: () => Promise<unknown>;
 }
 
-export default function Button({ href, title, forcedColorScheme }: ButtonProps) {
+export default function Button({ 
+  href, 
+  title, 
+  forcedColorScheme,
+  onBeforeNavigation 
+}: ButtonProps) {
   const colorScheme = forcedColorScheme ?? useColorScheme();
+  
+  const handlePress = async () => {
+    if (onBeforeNavigation) {
+      await onBeforeNavigation();
+    }
+    router.push(href);
+  };
+
   return (
-    <Pressable style={[styles.button, { backgroundColor: Colors[colorScheme ?? "light"].primary }]}>
-      <Link href={ href }>
-        <Text style={[styles.buttonText, { color: colorScheme === "light" ? 'black' : 'white' }]}>{title}</Text>
-      </Link>
+    <Pressable 
+      style={[styles.button, { backgroundColor: Colors[colorScheme ?? "light"].primary }]}
+      onPress={handlePress}
+    >
+      <Text style={[styles.buttonText, { color: colorScheme === "light" ? 'black' : 'white' }]}>
+        {title}
+      </Text>
     </Pressable>
   );
 }
