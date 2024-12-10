@@ -16,9 +16,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         tabBarStyle: {
-          backgroundColor: colorScheme === "dark" ? "black" : "black",
+          backgroundColor: colorScheme === "dark" ? "black" : "white",
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
           alignItems: "stretch",

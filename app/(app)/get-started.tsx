@@ -116,7 +116,7 @@ export default function GetStarted() {
 
   return (
     <Animated.View
-      style={[{ flex: 1, justifyContent: "flex-end" }, styles.view]}
+      style={[{ flex: 1, justifyContent: "flex-end", backgroundColor: "black" }, styles.view]}
     >
       <Animated.Image
         source={require("@/assets/images/app/coffee1.png")}
