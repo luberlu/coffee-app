@@ -1,14 +1,18 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { View } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Text } from '@/components/Themed';
+import React from "react";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { View } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 
 const TabBarIcon = (props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
   focused: boolean;
   title: string;
+  children: React.ReactNode;
 }) => {
   const rotate = useSharedValue(0);
   const animatedStyles = useAnimatedStyle(() => ({
@@ -25,13 +29,10 @@ const TabBarIcon = (props: {
   });
 
   return (
-    <View style={[{ alignItems: 'center', width: 50, height: "100%" }]}>
-      <Animated.View style={animatedStyles}>
-        <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />
-      </Animated.View>
-      <Text style={{ color: 'white', fontSize: 10, marginTop: 5 }}>{props.title}</Text>
+    <View>
+      <Animated.View>{props.children}</Animated.View>
     </View>
   );
 };
 
-export default TabBarIcon; 
+export default TabBarIcon;
