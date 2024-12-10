@@ -12,6 +12,10 @@ const LogoutButton = () => {
   const { authTokens, setAuthTokens } = useAuth();
   const colorScheme = useColorScheme();
 
+  if (process.env.EXPO_PUBLIC_DISABLE_AUTH) {
+    return null;
+  }
+
   return (
     <Pressable onPress={() => logout(authTokens, setAuthTokens, () => router.push("/sign-in"))}>
       {({ pressed }) => (

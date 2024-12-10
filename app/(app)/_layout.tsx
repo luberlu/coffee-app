@@ -17,7 +17,7 @@ export {
 export default function RootLayout() {
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !process.env.EXPO_PUBLIC_DISABLE_AUTH) {
     return <Redirect href="/sign-in" />;
   }
 

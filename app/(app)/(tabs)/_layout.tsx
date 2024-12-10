@@ -3,8 +3,8 @@ import { Tabs } from "expo-router";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import TabBarIcon from "./components/TabBarIcon";
-import HeaderRight from "./components/headerRight";
+import TabBarIcon from "@/components/tabs/TabBarIcon";
+import HeaderRight from "@/components/tabs/headerRight";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
