@@ -7,25 +7,28 @@ import Animated, {
   withTiming,
   useSharedValue,
   SharedValue,
+  Easing,
+  withDelay,
 } from "react-native-reanimated";
 import React from "react";
 import AnimatedOuter from "@/components/AnimatedOuter";
 
+interface AnimationValues {
+  [key: string]: number;
+}
+
 interface AnimationConfig {
-  translateY: SharedValue<number>;
-  opacity: SharedValue<number>;
-  scale: SharedValue<number>;
-  delay: number;
-  in: {
-    translateY: number;
-    opacity: number;
-    scale: number;
+  values: {[key: string]: SharedValue<number>};
+  timing: {
+    duration: number;
+    easing: (value: number) => number;
   };
-  out: {
-    translateY: number;
-    opacity: number;
-    scale: number;
+  outTiming: {
+    duration: number;
+    easing: (value: number) => number;
   };
+  in: AnimationValues & { delay: number };
+  out: AnimationValues & { delay: number };
 }
 
 const createAnimationConfig = (type: 'image' | 'title' | 'text' | 'button'): AnimationConfig => {
@@ -34,23 +37,32 @@ const createAnimationConfig = (type: 'image' | 'title' | 'text' | 'button'): Ani
       initial: {
         translateY: 0,
         opacity: 0,
-        scale: 1.2,
+        scale: 1.1,
       },
       in: {
         translateY: 0,
         opacity: 1,
         scale: 1,
+        delay: 0,
       },
       out: {
         translateY: 0,
         opacity: 0,
         scale: 1.1,
+        delay: 0,
       },
-      delay: 0,
+      timing: {
+        duration: 800,
+        easing: Easing.linear,
+      },
+      outTiming: {
+        duration: 300,
+        easing: Easing.ease,
+      },
     },
     title: {
       initial: {
-        translateY: 20,
+        translateY: 10,
         opacity: 0,
         scale: 1,
       },
@@ -58,17 +70,26 @@ const createAnimationConfig = (type: 'image' | 'title' | 'text' | 'button'): Ani
         translateY: 0,
         opacity: 1,
         scale: 1,
+        delay: 200,
       },
       out: {
         translateY: 0,
         opacity: 0,
         scale: 1,
+        delay: 100,
       },
-      delay: 400,
+      timing: {
+        duration: 800,
+        easing: Easing.ease,
+      },
+      outTiming: {
+        duration: 300,
+        easing: Easing.ease,
+      },
     },
     text: {
       initial: {
-        translateY: 20,
+        translateY: 10,
         opacity: 0,
         scale: 1,
       },
@@ -76,17 +97,26 @@ const createAnimationConfig = (type: 'image' | 'title' | 'text' | 'button'): Ani
         translateY: 0,
         opacity: 1,
         scale: 1,
+        delay: 400,
       },
       out: {
         translateY: 0,
         opacity: 0,
         scale: 1,
+        delay: 200,
       },
-      delay: 500,
+      timing: {
+        duration: 800,
+        easing: Easing.ease,
+      },
+      outTiming: {
+        duration: 300,
+        easing: Easing.ease,
+      },
     },
     button: {
       initial: {
-        translateY: 20,
+        translateY: 10,
         opacity: 0,
         scale: 1,
       },
@@ -94,44 +124,67 @@ const createAnimationConfig = (type: 'image' | 'title' | 'text' | 'button'): Ani
         translateY: 0,
         opacity: 1,
         scale: 1,
+        delay: 800,
       },
       out: {
         translateY: 0,
         opacity: 0,
         scale: 1,
+        delay: 400,
       },
-      delay: 600,
+      timing: {
+        duration: 800,
+        easing: Easing.ease,
+      },
+      outTiming: {
+        duration: 300,
+        easing: Easing.ease,
+      },
     },
   };
 
   const config = configs[type];
+  const values: {[key: string]: SharedValue<number>} = {};
+  
+  Object.entries(config.initial).forEach(([key, value]) => {
+    values[key] = useSharedValue(value);
+  });
+
   return {
-    translateY: useSharedValue(config.initial.translateY),
-    opacity: useSharedValue(config.initial.opacity),
-    scale: useSharedValue(config.initial.scale),
-    delay: config.delay,
-    in: config.in,
-    out: config.out,
+    values,
+    in: { ...config.in },
+    out: { ...config.out },
+    timing: config.timing,
+    outTiming: config.outTiming,
   };
 };
 
-const createAnimatedStyle = (type: 'image' | 'title' | 'text' | 'button', config: AnimationConfig) => {
-  if (type === 'image') {
-    return useAnimatedStyle(() => ({
-      transform: [
-        { translateY: config.translateY.value },
-        { scale: config.scale.value }
-      ],
-      opacity: config.opacity.value,
-    }));
-  }
+const animateValues = (
+  values: {[key: string]: SharedValue<number>},
+  targetValues: AnimationValues,
+  timing: { duration: number; easing: (value: number) => number },
+  delay: number = 0
+) => {
+  Object.entries(values).forEach(([key, sharedValue]) => {
+    if (key in targetValues) {
+      sharedValue.value = withDelay(
+        delay,
+        withTiming(targetValues[key], {
+          duration: timing.duration,
+          easing: timing.easing,
+        })
+      );
+    }
+  });
+};
 
+const createAnimatedStyle = (config: AnimationConfig) => {
   return useAnimatedStyle(() => ({
     transform: [
-      { translateY: config.translateY.value },
-      { scale: config.scale.value }
+      { translateY: config.values.translateY.value },
+      { scale: config.values.scale.value }
     ],
-    opacity: config.opacity.value,
+    opacity: config.values.opacity.value,
   }));
 };
 
@@ -144,28 +197,30 @@ export default function GetStarted() {
   };
 
   const styles = {
-    image: createAnimatedStyle('image', animations.image),
-    title: createAnimatedStyle('title', animations.title),
-    text: createAnimatedStyle('text', animations.text),
-    button: createAnimatedStyle('button', animations.button),
+    image: createAnimatedStyle(animations.image),
+    title: createAnimatedStyle(animations.title),
+    text: createAnimatedStyle(animations.text),
+    button: createAnimatedStyle(animations.button),
+  };
+
+  const animateIn = ({
+    values,
+    in: inValues,
+    timing,
+  }: AnimationConfig) => {
+    animateValues(values, inValues, timing, inValues.delay);
+  };
+
+  const animateOut = ({
+    values,
+    out,
+    outTiming,
+  }: AnimationConfig) => {
+    animateValues(values, out, outTiming, out.delay);
   };
 
   React.useEffect(() => {
-    const animateElement = ({
-      translateY,
-      opacity,
-      scale,
-      delay,
-      in: inValues,
-    }: AnimationConfig) => {
-      setTimeout(() => {
-        translateY.value = withTiming(inValues.translateY, { duration: 600 });
-        opacity.value = withTiming(inValues.opacity, { duration: 600 });
-        scale.value = withTiming(inValues.scale, { duration: 600 });
-      }, delay);
-    };
-
-    Object.values(animations).forEach(animateElement);
+    Object.values(animations).forEach(animateIn);
   }, []);
 
   return (
@@ -212,21 +267,11 @@ export default function GetStarted() {
             href="/(app)/(tabs)"
             title="Get started"
             onBeforeNavigation={async () => {
-              const animateOut = ({
-                translateY,
-                opacity,
-                scale,
-                out,
-              }: AnimationConfig) => {
-                translateY.value = withTiming(out.translateY, {
-                  duration: 300,
-                });
-                opacity.value = withTiming(out.opacity, { duration: 300 });
-                scale.value = withTiming(out.scale, { duration: 300 });
-              };
-
-              Object.values(animations).forEach(animateOut);
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+              const maxDelay = Math.max(...Object.values(animations).map(config => config.out.delay));
+              const maxDuration = Math.max(...Object.values(animations).map(config => config.outTiming.duration));
+              
+              Object.values(animations).forEach((config) => animateOut(config));
+              await new Promise((resolve) => setTimeout(resolve, maxDelay + maxDuration));
             }}
           />
         </Animated.View>
