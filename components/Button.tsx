@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { Link, LinkProps, router } from 'expo-router';
 import Colors from "@/constants/Colors";
@@ -19,7 +19,8 @@ export default function Button({
   onBeforeNavigation 
 }: ButtonProps) {
   const colorScheme = forcedColorScheme ?? useColorScheme();
-  
+  const [isPressed, setIsPressed] = useState(false);
+
   const handlePress = async () => {
     if (onBeforeNavigation) {
       await onBeforeNavigation();
@@ -29,7 +30,8 @@ export default function Button({
 
   return (
     <Pressable 
-      style={[styles.button, { backgroundColor: Colors[colorScheme ?? "light"].primary }]}
+      style={[styles.button, { opacity: isPressed ? 0.5 : 1, backgroundColor: Colors[colorScheme ?? "light"].primary }]}
+      onPressIn={() => setIsPressed(true)}
       onPress={handlePress}
     >
       <Text style={[styles.buttonText, { color: colorScheme === "light" ? 'black' : 'white' }]}>

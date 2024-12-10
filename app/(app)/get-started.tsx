@@ -9,7 +9,6 @@ import Animated, {
   SharedValue,
   Easing,
   withDelay,
-  withSequence,
 } from "react-native-reanimated";
 import React from "react";
 import AnimatedOuter from "@/components/AnimatedOuter";
@@ -73,11 +72,11 @@ export default function GetStarted() {
   }, []);
 
   return (
-    <View style={{ flex: 1, justifyContent: "flex-end", alignItems: "center" }}>
+    <View style={{ flex: 1, justifyContent: "flex-end" }}>
       <Animated.Image
         source={require("@/assets/images/app/coffee1.png")}
         style={[
-          { width: "100%", height: "70%", position: "absolute", top: 0, transform: [{ scale: 1 }] },
+          { width: "100%", height: "70%", position: "absolute", top: 0, left: 0,transform: [{ scale: 1 }] },
           styles.image,
         ]}
         resizeMode="cover"
@@ -88,6 +87,7 @@ export default function GetStarted() {
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "transparent",
+            padding: 30,
             paddingBottom: 80,
           },
         ]}
@@ -111,7 +111,7 @@ export default function GetStarted() {
             every cup is a delightful for you.
           </Text>
         </AnimatedOuter>
-        <Animated.View style={styles.button}>
+        <Animated.View style={[styles.button, { width: "100%"}]}>
           <Button
             href="/(app)/(tabs)"
             title="Get started"
@@ -213,11 +213,11 @@ const animateButtonIn = (values: {[key: string]: SharedValue<number>}) => {
 };
 
 const animateButtonOut = (values: {[key: string]: SharedValue<number>}) => {
-  values.translateY.value = withDelay(400, withTiming(0, {
+  values.translateY.value = withDelay(300, withTiming(0, {
     duration: 300,
     easing: Easing.ease
   }));
-  values.opacity.value = withDelay(400, withTiming(0, {
+  values.opacity.value = withDelay(300, withTiming(0, {
     duration: 200,
     easing: Easing.ease
   }));
