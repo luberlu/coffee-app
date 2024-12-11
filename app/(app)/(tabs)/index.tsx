@@ -1,15 +1,16 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import { Filter } from "@/components/Filter";
-import { CoffeeList } from "@/components/CoffeeList";
+import CoffeeListOuter from "@/components/CoffeeList";
+import Colors, { constants } from "@/constants/Colors";
 
 export default function TabOneScreen() {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: constants.grey.darker }]}>
       <Filter />
-      <CoffeeList />
+      <CoffeeListOuter />
     </View>
   );
 }
@@ -17,7 +18,6 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
   },
   title: {
     fontSize: 20,

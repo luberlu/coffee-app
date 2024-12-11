@@ -9,6 +9,9 @@ import { Asset } from 'expo-asset';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthProvider } from '../contexts/AuthContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -61,7 +64,9 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
-        <Slot />
+        <QueryClientProvider client={queryClient}>
+          <Slot />
+        </QueryClientProvider>
       </AuthProvider>
     </ThemeProvider>
   );
