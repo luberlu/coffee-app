@@ -9,6 +9,7 @@ import { FavoritesIcon } from "@/components/icons/Favorites";
 import { HomeIcon } from "@/components/icons/Home";
 import { CartIcon } from "@/components/icons/Cart";
 import { NotificationsIcon } from "@/components/icons/Notifications";
+import { View } from "react-native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -110,6 +111,9 @@ export default function TabLayout() {
               <NotificationsIcon
                 color={focused ? Colors[colorScheme ?? "light"].primary : color}
               />
+              <NotificationsPin
+                color={ Colors[colorScheme ?? "light"].primary }
+              />
             </TabBarIcon>
           ),
           headerRight: () => <HeaderRight />,
@@ -118,3 +122,19 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const NotificationsPin = ({ color }: { color: string }) => {
+  return (
+    <View
+      style={{
+        position: "absolute",
+        top: 0,
+        right: 1,
+        backgroundColor: color,
+        borderRadius: 100,
+        width: 10,
+        height: 10,
+      }}
+    />
+  );
+};
