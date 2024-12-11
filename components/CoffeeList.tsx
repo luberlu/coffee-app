@@ -1,4 +1,10 @@
-import { FlatList, Pressable, ScrollView, StyleSheet, Image } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { View, Text } from "./Themed";
 import { COFFEE_TYPES, useFilterStore } from "@/stores/useFilterStore";
 import { CoffeeListItem } from "./CoffeeListItem";
@@ -96,7 +102,7 @@ function TypeBar() {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         horizontal
-        style={{ flexDirection: "row", flexWrap: "nowrap"}}
+        style={{ flexDirection: "row", flexWrap: "nowrap" }}
       >
         <Pressable
           key="all"
@@ -106,7 +112,9 @@ function TypeBar() {
               selectedCoffeeType === null
                 ? Colors[colorScheme ?? "light"].primary
                 : constants.grey.darker,
-            padding: 10,
+            padding: 6,
+            paddingLeft: 8,
+            paddingRight: 8,
             margin: 5,
             marginLeft: 0,
             borderRadius: 6,
@@ -117,6 +125,7 @@ function TypeBar() {
           <Text
             style={{
               color: "white",
+              lineHeight: 18,
             }}
           >
             All Coffee
@@ -132,7 +141,9 @@ function TypeBar() {
                 selectedCoffeeType === item
                   ? Colors[colorScheme ?? "light"].primary
                   : constants.grey.darker,
-              padding: 10,
+              padding: 6,
+              paddingLeft: 8,
+              paddingRight: 8,
               margin: 5,
               borderRadius: 6,
               minWidth: 80,
@@ -142,6 +153,7 @@ function TypeBar() {
             <Text
               style={{
                 color: selectedCoffeeType === item ? "white" : "white",
+                lineHeight: 18,
               }}
             >
               {item}
@@ -183,10 +195,10 @@ export default function CoffeeListOuter() {
         flex: 1,
         backgroundColor: "transparent",
         marginTop: -80,
-        height: "100%"
+        height: "100%",
       }}
     >
-      <View style={{ backgroundColor: "transparent", padding: 16 }}>
+      <View style={{ backgroundColor: "transparent", padding: 16}}>
         <View style={styles.promoBanner}>
           <Image
             source={require("@/assets/images/banner1.png")}
@@ -197,10 +209,9 @@ export default function CoffeeListOuter() {
 
       <TypeBar />
 
-      <View style={{ flex: 1, padding: 16 }}>
+      <View style={{ flex: 1, padding: 16, paddingTop: 0 }}>
         <CoffeeList />
       </View>
-      
     </View>
   );
 }
