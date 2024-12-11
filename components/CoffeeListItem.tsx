@@ -1,9 +1,10 @@
 import { Link } from 'expo-router';
-import { Text } from "./Themed";
+import { Text, View } from "./Themed";
 import { Pressable, StyleSheet, Image } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
+import { constants } from '@/constants/Colors';
 
-export function CoffeeListItem({ id, name, type }: { id: string, name: string, type: string }) {
+export function CoffeeListItem({ id, name, type, price }: { id: string, name: string, type: string, price: number }) {
 
   const { data: imageUrl } = useQuery({
     queryKey: ['coffee-image', id],
@@ -13,12 +14,15 @@ export function CoffeeListItem({ id, name, type }: { id: string, name: string, t
   return (
     <Link href={`/(app)/coffee/${id}`} asChild>
       <Pressable style={styles.container}>
-        <Image 
-          source={{ uri: imageUrl }}
-          style={styles.image}
-        />
+        <View style={styles.imageContainer}>
+          <Image 
+            source={{ uri: imageUrl }}
+            style={styles.image}
+          />
+        </View>
         <Text style={styles.title}>{name}</Text>
         <Text style={styles.type}>{type}</Text>
+        <Text style={styles.price}>{price}$</Text>
       </Pressable>
     </Link>
   );
@@ -26,15 +30,30 @@ export function CoffeeListItem({ id, name, type }: { id: string, name: string, t
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    flex: 1,
     width: "50%",
-    alignItems: 'center',
+    maxWidth: "50%",
+    marginBottom: 24,
+    padding: 8,
+    backgroundColor: constants.grey.darker,
+    borderRadius: 16,
+    paddingBottom: 16,
+  },
+  imageContainer: {
+    width: "100%",
+    height: 128,
+    borderRadius: 10,
+    marginBottom: 10,
+    overflow: "hidden",
   },
   image: {
     width: "100%",
-    height: 100,
-    borderRadius: 10,
-    marginBottom: 10,
+    height: "100%",
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 5,
   },
   title: {
     fontSize: 16,
@@ -44,6 +63,7 @@ const styles = StyleSheet.create({
   type: {
     fontSize: 14,
     color: '#666',
+    marginBottom: 5,
   },
 });
 

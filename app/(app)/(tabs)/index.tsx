@@ -8,7 +8,7 @@ import Colors, { constants } from "@/constants/Colors";
 
 export default function TabOneScreen() {
   return (
-    <View style={[styles.container, { backgroundColor: constants.grey.darker }]}>
+    <View style={[styles.container]}>
       <Filter />
       <CoffeeListOuter />
     </View>
@@ -18,14 +18,10 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 0,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
+  }
 });

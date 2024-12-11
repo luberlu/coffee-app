@@ -1,7 +1,7 @@
 import { View, StyleSheet, Pressable, useColorScheme } from "react-native";
 import { Search } from "./Search";
 import { FilterIcon } from "./icons/Filter";
-import Colors from "@/constants/Colors";
+import Colors, { constants } from "@/constants/Colors";
 import { Link } from "expo-router";
 
 export const Filter = () => {
@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 16,
     paddingTop: 70,
+    paddingBottom: 90,
+    backgroundColor: constants.grey.darker
   },
 });
 
