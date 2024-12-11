@@ -57,6 +57,7 @@ export default function TabLayout() {
             </TabBarIcon>
           ),
           headerRight: () => <HeaderRight />,
+          headerShown: false,
         }}
       />
       <Tabs.Screen

@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
 
 export default function CoffeeListOuter() {
   return (
-    <View
+    <ScrollView
       style={{
         flex: 1,
         backgroundColor: "transparent",
@@ -209,10 +209,10 @@ export default function CoffeeListOuter() {
 
       <TypeBar />
 
-      <View style={{ flex: 1, padding: 16, paddingTop: 0 }}>
+      <View style={{ flex: 1, padding: 16, paddingTop: 0, paddingBottom: 0 }}>
         <CoffeeList />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -242,6 +242,7 @@ export function CoffeeList() {
       showsVerticalScrollIndicator={false}
       columnWrapperStyle={{ gap: 15 }}
       contentContainerStyle={{ paddingTop: 10, paddingBottom: 20 }}
+      scrollEnabled={false}
       data={filteredCoffees}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
