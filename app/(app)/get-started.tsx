@@ -1,4 +1,4 @@
-import { Text, View } from "@/components/Themed";
+import { Text } from "@/components/Themed";
 import fonts, { tokens } from "@/constants/Font";
 import Button from "@/components/Button";
 import Colors from "@/constants/Colors";
@@ -8,7 +8,7 @@ import Animated, {
   SharedValue,
   interpolate,
 } from "react-native-reanimated";
-import React from "react";
+import React, { useEffect } from "react";
 import AnimatedOuter from "@/components/AnimatedOuter";
 import { calcBezier } from "@/utils/bezier";
 import { animations } from "@/components/animations/get-started";
@@ -104,8 +104,7 @@ export default function GetStarted() {
     }),
   };
 
-  // Initial animation
-  React.useEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
       animations.image.in(imageValues);
       animations.title.in(titleValues);

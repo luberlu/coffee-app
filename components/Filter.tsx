@@ -1,9 +1,7 @@
 import { View, StyleSheet, Pressable, useColorScheme } from "react-native";
 import { Search } from "./Search";
-import { Text } from "./Themed";
 import { FilterIcon } from "./icons/Filter";
 import Colors from "@/constants/Colors";
-import { useState } from "react";
 import { Link } from "expo-router";
 
 export const Filter = () => {

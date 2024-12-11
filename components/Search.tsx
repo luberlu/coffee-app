@@ -4,20 +4,37 @@ import { SearchIcon } from "./icons/Search";
 import Colors, { constants } from "@/constants/Colors";
 import { useColorScheme } from "./useColorScheme";
 import fonts from "@/constants/Font";
-import { useFilterStore } from '@/stores/useFilterStore';
+import { useFilterStore } from "@/stores/useFilterStore";
 
 export const Search = () => {
-  const { selectedCoffeeType } = useFilterStore();
+  const {
+    selectedCoffeeType,
+    selectedCoffeeStrength,
+    searchQuery,
+    setSearchQuery,
+  } = useFilterStore();
   const colorScheme = useColorScheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: Colors[colorScheme ?? "light"].tertiary }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: Colors[colorScheme ?? "light"].tertiary },
+      ]}
+    >
       <View style={styles.searchIcon}>
         <SearchIcon color="white" />
       </View>
       <TextInput
         style={styles.input}
-        placeholder={`Search ${selectedCoffeeType || 'coffee'}`}
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder={[
+          'Search',
+          selectedCoffeeType,
+          selectedCoffeeStrength,
+          'coffee'
+        ].filter(Boolean).join(' ')}
         placeholderTextColor={constants.grey.lighter}
       />
     </View>
@@ -27,7 +44,7 @@ export const Search = () => {
 const styles = StyleSheet.create({
   searchIcon: {
     marginRight: 8,
-    color: "white"
+    color: "white",
   },
   container: {
     flexDirection: "row",
@@ -36,7 +53,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     marginRight: 16,
-    height: 52
+    height: 52,
   },
   icon: {
     marginRight: 10,
@@ -44,6 +61,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: fonts.fontSize.sm,
-    color: "white"
+    color: "white",
   },
 });

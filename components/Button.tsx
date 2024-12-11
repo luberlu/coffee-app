@@ -6,7 +6,7 @@ import fonts from "@/constants/Font";
 import { useColorScheme } from "@/components/useColorScheme";
 
 interface ButtonProps {
-  href: LinkProps["href"];
+  href: LinkProps["href"] | "back";
   title: string;
   forcedColorScheme?: "light" | "dark";
   onBeforeNavigation?: () => Promise<undefined>;
@@ -25,14 +25,20 @@ export default function Button({
     if (onBeforeNavigation) {
       await onBeforeNavigation();
     }
-    router.push(href);
+    if(href) {
+      if(href === "back") {
+        router.back();
+      } else {
+        router.push(href);
+      }
+    }
   };
 
   return (
     <Pressable 
       style={[styles.button, { opacity: isPressed ? 0.5 : 1, backgroundColor: Colors[colorScheme ?? "light"].primary }]}
       onPressIn={() => setIsPressed(true)}
-      onPress={handlePress}
+      onPress={ handlePress }
     >
       <Text style={[styles.buttonText, { color: colorScheme === "light" ? 'black' : 'white' }]}>
         {title}
