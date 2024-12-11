@@ -1,11 +1,15 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withSpring,
+  withTiming,
+  Easing,
 } from "react-native-reanimated";
+import Colors from "@/constants/Colors";
+import { useColorScheme } from "../useColorScheme";
+import { useFocusEffect } from "expo-router";
 
 const TabBarIcon = (props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -14,25 +18,53 @@ const TabBarIcon = (props: {
   title: string;
   children: React.ReactNode;
 }) => {
-  const rotate = useSharedValue(0);
+  const scale = useSharedValue(0);
+  const colorScheme = useColorScheme();
+
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotate.value}deg` }],
+    transform: [{ scale: scale.value }],
   }));
 
-  React.useEffect(() => {
-    if (props.focused) {
-      rotate.value = withSpring(rotate.value + 180, {
-        damping: 10,
-        stiffness: 100,
+  useFocusEffect(
+    React.useCallback(() => {
+      scale.value = withTiming(1, {
+        duration: 500,
+        easing: Easing.elastic(1),
       });
-    }
-  });
+      return () => {
+        scale.value = 0;
+      };
+    }, [])
+  );
 
   return (
-    <View>
+    <View style={styles.icon}>
       <Animated.View>{props.children}</Animated.View>
+      <Animated.View
+        style={[
+          animatedStyles,
+          styles.focused,
+          {
+            backgroundColor: props.focused
+              ? Colors[colorScheme ?? "light"].primary
+              : "transparent",
+          },
+        ]}
+      />
     </View>
   );
 };
 
 export default TabBarIcon;
+
+const styles = StyleSheet.create({
+  icon: {
+    alignItems: "center",
+  },
+  focused: {
+    marginTop: 6,
+    height: 5,
+    width: 10,
+    borderRadius: 100,
+  },
+});

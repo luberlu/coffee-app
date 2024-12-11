@@ -22,6 +22,12 @@ export default function TabLayout() {
           borderTopRightRadius: 10,
           alignItems: "stretch",
           flexDirection: "row",
+          paddingLeft: 24,
+          paddingRight: 24,
+          height: 90,
+        },
+        tabBarLabelStyle: {
+          display: "none",
         },
         tabBarIconStyle: {
           height: "100%",
