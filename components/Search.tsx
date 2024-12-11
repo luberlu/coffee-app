@@ -4,9 +4,12 @@ import { SearchIcon } from "./icons/Search";
 import Colors, { constants } from "@/constants/Colors";
 import { useColorScheme } from "./useColorScheme";
 import fonts from "@/constants/Font";
+import { useFilterStore } from '@/stores/useFilterStore';
 
 export const Search = () => {
+  const { selectedCoffeeType } = useFilterStore();
   const colorScheme = useColorScheme();
+
   return (
     <View style={[styles.container, { backgroundColor: Colors[colorScheme ?? "light"].tertiary }]}>
       <View style={styles.searchIcon}>
@@ -14,8 +17,8 @@ export const Search = () => {
       </View>
       <TextInput
         style={styles.input}
-        placeholder="Search coffee"
-        placeholderTextColor={ constants.grey.lighter }
+        placeholder={`Search ${selectedCoffeeType || 'coffee'}`}
+        placeholderTextColor={constants.grey.lighter}
       />
     </View>
   );
