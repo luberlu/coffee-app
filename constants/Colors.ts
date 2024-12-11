@@ -1,10 +1,19 @@
 const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
 
+export const constants = {
+  grey: {
+    lighter: "#A2A2A2",
+    light: "#808080",
+    dark: "#595959",
+    darker: "#313131",
+  },
+};
+
 export default {
   light: {
     text: '#000',
-    background: '#fff',
+    background: "#fff",
     tint: tintColorLight,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
@@ -27,3 +36,5 @@ export default {
     quinary: "#F9F2ED",
   },
 };
+
+
