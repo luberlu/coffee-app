@@ -18,9 +18,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 16,
-    paddingTop: 70,
-    paddingBottom: 90,
+    paddingTop: 10,
+    paddingBottom: 70,
     backgroundColor: constants.grey.darker
   },
 });
