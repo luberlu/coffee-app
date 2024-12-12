@@ -3,10 +3,9 @@ import { Platform, StyleSheet, Pressable } from "react-native";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
-import Button from "@/components/Button";
 import { useLocationStore } from "@/stores/useLocationStore";
 import { router } from "expo-router";
-import { Image, ImageSource } from 'expo-image';
+import { Image } from 'expo-image';
 
 const CITIES = [
   {

@@ -1,10 +1,8 @@
-import { StyleSheet, useColorScheme } from "react-native";
-
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
+import { StyleSheet } from "react-native";
+import { View } from "@/components/Themed";
 import { Filter } from "@/components/Filter";
 import CoffeeListOuter from "@/components/CoffeeList";
-import Colors, { constants } from "@/constants/Colors";
+import { constants } from "@/constants/Colors";
 import Location from "@/components/Location";
 
 export default function TabOneScreen() {

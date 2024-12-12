@@ -6,14 +6,18 @@ import fonts from "@/constants/Font";
 import { constants } from "@/constants/Colors";
 
 interface BannerProps {
-  type?: "promo" | "info" | "new";
-  title: string;
+  type?: "Promo" | "Info" | "New";
   lines: string[];
   image: any;
   style?: ViewStyle;
 }
 
-export function Banner({ type = "promo", title, lines, image, style }: BannerProps) {
+export function Banner({
+  type = "Promo",
+  lines,
+  image,
+  style,
+}: BannerProps) {
   return (
     <View style={[styles.banner, style]}>
       <ImageBackground
@@ -25,7 +29,7 @@ export function Banner({ type = "promo", title, lines, image, style }: BannerPro
         <View style={styles.content}>
           {type && (
             <View style={styles.tag}>
-              <Text style={styles.tagText}>{title}</Text>
+              <Text style={styles.tagText}>{type}</Text>
             </View>
           )}
           <View style={styles.textContainer}>
@@ -52,41 +56,50 @@ const styles = StyleSheet.create({
     width: "100%",
     overflow: "hidden",
   },
+  text: {
+    fontSize: fonts.fontSize.lg,
+    fontWeight: "bold",
+    backgroundColor: "transparent",
+    zIndex: 1,
+  },
+ textContainer: {
+    gap: 2,
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
   content: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
+    paddingHorizontal: 24,
+    paddingVertical: 13,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    backgroundColor: "transparent",
   },
   tag: {
-    backgroundColor: Colors.primary,
-    borderRadius: 8,
-    paddingHorizontal: 12,
+    backgroundColor: Colors.light.promo,
+    paddingHorizontal: 6,
     paddingVertical: 4,
+    borderRadius: 8,
     marginBottom: 8,
   },
   tagText: {
-    color: Colors.white,
-    fontFamily: fonts.bold,
-    fontSize: 14,
-  },
-  textContainer: {
-    alignItems: "center",
-  },
-  textLine: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 2,
-  },
-  text: {
-    color: Colors.white,
-    fontFamily: fonts.regular,
-    fontSize: 16,
+    color: "white",
+    fontSize: fonts.fontSize.sm,
+    fontWeight: "bold",
   },
   textHighlight: {
-    backgroundColor: Colors.secondary,
-    height: 2,
-    flex: 1,
-    marginLeft: 4,
+    backgroundColor: Colors.light.tertiary,
+    position: "absolute",
+    left: -3,
+    top: 16,
+    width: "106%",
+    height: "70%",
+    zIndex: 0,
   },
-}); 
+  textLine: {
+    backgroundColor: "transparent",
+    position: "relative",
+    alignItems: "flex-start",
+  }
+});

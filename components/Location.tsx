@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, Pressable } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from './Themed';
 import * as ExpoLocation from 'expo-location';
-import { Ionicons } from '@expo/vector-icons';
-import { constants } from '@/constants/Colors';
 import { Link } from 'expo-router';
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
 import { useLocationStore } from '@/stores/useLocationStore';
 import ArrowDown from '@/assets/icons/arrow-down.svg';
 import fonts from '@/constants/Font';
+import { constants } from '@/constants/Colors';
 
 const CITIES = [
   { name: 'Paris', coords: { latitude: 48.8566, longitude: 2.3522 } },

@@ -3,7 +3,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Image,
 } from "react-native";
 import { View, Text } from "./Themed";
 import { COFFEE_TYPES, useFilterStore } from "@/stores/useFilterStore";
@@ -11,8 +10,8 @@ import { CoffeeListItem } from "./CoffeeListItem";
 import { useMemo } from "react";
 import Colors, { constants } from "@/constants/Colors";
 import { useColorScheme } from "./useColorScheme";
-import { ImageBackground } from "expo-image";
 import fonts from "@/constants/Font";
+import { Banner } from "./Banner";
 
 export interface Coffee {
   id: string;
@@ -235,38 +234,20 @@ const styles = StyleSheet.create({
 export default function CoffeeListOuter() {
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       style={{
         flex: 1,
         backgroundColor: "transparent",
-        marginTop: -80,
+        marginTop: -90,
         height: "100%",
       }}
     >
       <View style={{ backgroundColor: "transparent", padding: 16 }}>
-        <View style={styles.promoBanner}>
-          <ImageBackground
-            source={require("@/assets/images/banner1.png")}
-            style={{ width: "100%", height: "100%" }}
-            contentPosition="center"
-            contentFit="cover"
-          >
-            <View style={styles.promoContent}>
-              <View style={styles.promoTag}>
-                <Text style={styles.promoTagText}>Promo</Text>
-              </View>
-              <View style={styles.promoTextContainer}>
-                <View style={styles.promoTextLine}>
-                  <Text style={styles.promoText}>Buy one get</Text>
-                  <View style={styles.promoTextHighlight}></View>
-                </View>
-                <View style={styles.promoTextLine}>
-                  <Text style={styles.promoText}>one FREE</Text>
-                  <View style={styles.promoTextHighlight}></View>
-                </View>
-              </View>
-            </View>
-          </ImageBackground>
-        </View>
+        <Banner
+          type="Promo"
+          lines={["Buy one get", "one FREE"]}
+          image={require("@/assets/images/banner1.png")}
+        />
       </View>
 
       <TypeBar />

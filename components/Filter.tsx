@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingTop: 10,
     paddingBottom: 70,
-    backgroundColor: constants.grey.darker
+    backgroundColor: constants.grey.darker,
+    marginBottom: 14
   },
 });
 

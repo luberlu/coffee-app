@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
-import { Link, LinkProps, router } from 'expo-router';
+import { LinkProps, router } from 'expo-router';
 import Colors from "@/constants/Colors";
 import fonts from "@/constants/Font";
 import { useColorScheme } from "@/components/useColorScheme";
