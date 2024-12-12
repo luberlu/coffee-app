@@ -9,7 +9,8 @@ import { FavoritesIcon } from "@/components/icons/Favorites";
 import { HomeIcon } from "@/components/icons/Home";
 import { CartIcon } from "@/components/icons/Cart";
 import { NotificationsIcon } from "@/components/icons/Notifications";
-import { View } from "react-native";
+import { View, Text} from "react-native";
+import { useCartStore } from "@/stores/useCartStore";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -93,6 +94,25 @@ export default function TabLayout() {
               <CartIcon
                 color={focused ? Colors[colorScheme ?? "light"].primary : color}
               />
+              {useCartStore((state) => state.getItemCount()) > 0 && (
+                <View
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: -4,
+                    backgroundColor: Colors[colorScheme ?? "light"].primary,
+                    borderRadius: 100,
+                    width: 13,
+                    height: 13,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ color: "white", fontSize: 8 }}>
+                    {useCartStore((state) => state.getItemCount())}
+                  </Text>
+                </View>
+              )}
             </TabBarIcon>
           ),
           headerRight: () => <HeaderRight />,
