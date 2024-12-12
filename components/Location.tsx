@@ -8,6 +8,7 @@ import { Link } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useLocationStore } from '@/stores/useLocationStore';
+import ArrowDown from '@/assets/icons/arrow-down.svg';
 
 const CITIES = [
   { name: 'Paris', coords: { latitude: 48.8566, longitude: 2.3522 } },
@@ -73,8 +74,11 @@ export default function Location({ onLocationChange }: LocationProps = {}) {
     <View style={styles.container}>
       <Link href="/location" asChild>
         <TouchableOpacity style={styles.locationContainer}>
-          <Text style={styles.text}>Location :</Text>
-          <Text style={styles.text}>{location || 'Choose a city'}</Text>
+          <Text style={styles.text}>Location</Text>
+          <View style={styles.locationTextContainer}>
+            <Text style={styles.textLocation}>{location || 'Choose a city'}</Text>
+            <ArrowDown style={styles.arrowDown} fill={ constants.grey.light }/>
+          </View>
         </TouchableOpacity>
       </Link>
     </View>
@@ -91,6 +95,23 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    color: constants.grey.medium,
     fontWeight: '500',
   },
+  locationTextContainer: {
+    marginTop: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "transparent",
+  },
+  textLocation: {
+    fontSize: 16,
+    color: constants.grey.light,
+    fontWeight: '700',
+    marginRight: 6,
+  },
+  arrowDown: {
+    width: 16,
+    height: 16,
+  }
 }); 

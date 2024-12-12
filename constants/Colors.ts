@@ -4,7 +4,8 @@ const tintColorDark = '#fff';
 export const constants = {
   grey: {
     lighter: "#E8E8E8",
-    light: "#BEBEBE",
+    light: "#D8D8D8",
+    medium: "#A2A2A2",
     dark: "#4A4A4A",
     darker: "#1A1A1A",
   },

@@ -20,7 +20,7 @@ export default function LocationScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choisir une ville</Text>
+      <Text style={styles.title}>Choose a city</Text>
       <View style={styles.citiesContainer}>
         {CITIES.map((city) => (
           <Pressable
@@ -46,7 +46,7 @@ export default function LocationScreen() {
       </View>
 
       <View style={styles.bottomContainer}>
-        <Button title="Valider" href="back" />
+        <Button title="Validate" href="back" />
       </View>
 
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   bottomContainer: {
-    marginTop: 'auto',
     paddingVertical: 20,
   },
 }); 

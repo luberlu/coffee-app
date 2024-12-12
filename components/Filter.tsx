@@ -52,7 +52,7 @@ const stylesFilterOptions = StyleSheet.create({
   container: {
     height: 52,
     width: 52,
-    borderRadius: 8,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
   },
