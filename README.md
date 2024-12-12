@@ -1,4 +1,4 @@
-# coffee-app
+# A Coffee Shop Mobile App
 
 A coffee shop mobile application built with React Native and Expo, currently under development. The UI is based on [this Figma design](https://www.figma.com/community/file/1116708627748807811/coffee-shop-mobile-app-design).
 
@@ -23,7 +23,7 @@ A coffee shop mobile application built with React Native and Expo, currently und
 ## 🛠 Installation
 
 # Clone repository
-git clone [your-repo]
+git clone https://github.com/luberlu/coffee-app.git
 
 # Install dependencies
 npm install
@@ -44,13 +44,15 @@ npx expo start
 │   └── ...
 ├── contexts/
 │   └── AuthContext.tsx
+├── stores/
+│   └── useCartStore.ts
 └── constants/
     ├── Colors.ts
     └── Font.ts
 
 ## 📄 License
 
-[Your license]
+Under MIT license.
 
 ---
 *UI Design by [Didi Kurniawan](https://www.figma.com/community/file/1116708627748807811/coffee-shop-mobile-app-design)*
