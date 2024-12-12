@@ -6,12 +6,25 @@ import { useColorScheme } from "@/components/useColorScheme";
 import Button from "@/components/Button";
 import { useLocationStore } from "@/stores/useLocationStore";
 import { router } from "expo-router";
+import { Image, ImageSource } from 'expo-image';
 
 const CITIES = [
-  'Paris',
-  'London',
-  'Lisboa',
-  'Barcelona',
+  {
+    name: 'Paris',
+    image: require('@/assets/images/cities/paris.webp'),
+  },
+  {
+    name: 'London',
+    image: require('@/assets/images/cities/london.webp'),
+  },
+  {
+    name: 'Lisboa',
+    image: require('@/assets/images/cities/lisboa.webp'),
+  },
+  {
+    name: 'Barcelona',
+    image: require('@/assets/images/cities/barcelona.webp'),
+  },
 ];
 
 export default function LocationScreen() {
@@ -24,29 +37,26 @@ export default function LocationScreen() {
       <View style={styles.citiesContainer}>
         {CITIES.map((city) => (
           <Pressable
-            key={city}
+            key={city.name}
             onPress={() => {
-              setLocation(city);
+              setLocation(city.name);
               router.back();
             }}
             style={({ pressed }) => [
               styles.cityButton,
               {
                 backgroundColor:
-                  location === city
+                  location === city.name
                     ? Colors[colorScheme ?? "light"].primary
                     : Colors[colorScheme ?? "light"].tertiary,
                 opacity: pressed ? 0.8 : 1,
               },
             ]}
           >
-            <Text style={styles.cityText}>{city}</Text>
+            <Image source={city.image} style={styles.cityImage} contentFit="cover" transition={100} />
+            <Text style={styles.cityText}>{city.name}</Text>
           </Pressable>
         ))}
-      </View>
-
-      <View style={styles.bottomContainer}>
-        <Button title="Validate" href="back" />
       </View>
 
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
@@ -67,19 +77,23 @@ const styles = StyleSheet.create({
   citiesContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
+    gap: 20,
   },
   cityButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
     borderRadius: 8,
     marginBottom: 10,
     width: '47%',
+    overflow: 'hidden',
+  },
+  cityImage: {
+    width: '100%',
+    height: 100,
   },
   cityText: {
     color: "white",
     fontSize: 16,
     textAlign: 'center',
+    paddingVertical: 12,
   },
   bottomContainer: {
     paddingVertical: 20,

@@ -36,7 +36,10 @@ export default function RootLayout() {
     // Préchargement des images
     Asset.loadAsync([
       require("@/assets/images/app/coffee1.png"),
-      // Ajoutez ici d'autres images à précharger
+      require("@/assets/images/cities/paris.webp"),
+      require("@/assets/images/cities/london.webp"),
+      require("@/assets/images/cities/lisboa.webp"),
+      require("@/assets/images/cities/barcelona.webp")
     ]);
   }, []);
 

@@ -11,6 +11,8 @@ import { CoffeeListItem } from "./CoffeeListItem";
 import { useMemo } from "react";
 import Colors, { constants } from "@/constants/Colors";
 import { useColorScheme } from "./useColorScheme";
+import { ImageBackground } from "expo-image";
+import fonts from "@/constants/Font";
 
 export interface Coffee {
   id: string;
@@ -183,8 +185,50 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   promoText: {
-    fontSize: 16,
+    fontSize: fonts.fontSize.lg,
     fontWeight: "bold",
+    backgroundColor: "transparent",
+    zIndex: 1,
+  },
+  promoTextContainer: {
+    gap: 2,
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  promoContent: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 13,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    backgroundColor: "transparent",
+  },
+  promoTag: {
+    backgroundColor: Colors.light.promo,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  promoTagText: {
+    color: "white",
+    fontSize: fonts.fontSize.sm,
+    fontWeight: "bold",
+  },
+  promoTextHighlight: {
+    backgroundColor: Colors.light.tertiary,
+    position: "absolute",
+    left: -3,
+    top: 16,
+    width: "106%",
+    height: "70%",
+    zIndex: 0,
+  },
+  promoTextLine: {
+    backgroundColor: "transparent",
+    position: "relative",
+    alignItems: "flex-start",
   },
 });
 
@@ -198,12 +242,30 @@ export default function CoffeeListOuter() {
         height: "100%",
       }}
     >
-      <View style={{ backgroundColor: "transparent", padding: 16}}>
+      <View style={{ backgroundColor: "transparent", padding: 16 }}>
         <View style={styles.promoBanner}>
-          <Image
+          <ImageBackground
             source={require("@/assets/images/banner1.png")}
             style={{ width: "100%", height: "100%" }}
-          />
+            contentPosition="center"
+            contentFit="cover"
+          >
+            <View style={styles.promoContent}>
+              <View style={styles.promoTag}>
+                <Text style={styles.promoTagText}>Promo</Text>
+              </View>
+              <View style={styles.promoTextContainer}>
+                <View style={styles.promoTextLine}>
+                  <Text style={styles.promoText}>Buy one get</Text>
+                  <View style={styles.promoTextHighlight}></View>
+                </View>
+                <View style={styles.promoTextLine}>
+                  <Text style={styles.promoText}>one FREE</Text>
+                  <View style={styles.promoTextHighlight}></View>
+                </View>
+              </View>
+            </View>
+          </ImageBackground>
         </View>
       </View>
 

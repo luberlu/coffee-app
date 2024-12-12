@@ -23,6 +23,7 @@ export default {
     tertiary: "#313131",
     quaternary: "#E3E3E3",
     quinary: "#F9F2ED",
+    promo: "#ED5151",
   },
   dark: {
     text: '#fff',
@@ -35,6 +36,7 @@ export default {
     tertiary: "#313131",
     quaternary: "#E3E3E3",
     quinary: "#F9F2ED",
+    promo: "#ED5151",
   },
 };
 

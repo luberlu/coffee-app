@@ -9,6 +9,7 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useLocationStore } from '@/stores/useLocationStore';
 import ArrowDown from '@/assets/icons/arrow-down.svg';
+import fonts from '@/constants/Font';
 
 const CITIES = [
   { name: 'Paris', coords: { latitude: 48.8566, longitude: 2.3522 } },
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   text: {
-    fontSize: 16,
+    fontSize: fonts.fontSize.xs,
     color: constants.grey.medium,
     fontWeight: '500',
   },
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   textLocation: {
-    fontSize: 16,
+    fontSize: fonts.fontSize.sm,
     color: constants.grey.light,
     fontWeight: '700',
     marginRight: 6,
