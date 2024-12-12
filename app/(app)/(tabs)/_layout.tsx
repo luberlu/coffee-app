@@ -14,6 +14,8 @@ import { useCartStore } from "@/stores/useCartStore";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const items = useCartStore((state) => state.items);
+  const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <Tabs
@@ -94,7 +96,7 @@ export default function TabLayout() {
               <CartIcon
                 color={focused ? Colors[colorScheme ?? "light"].primary : color}
               />
-              {useCartStore((state) => state.getItemCount()) > 0 && (
+              {totalItems > 0 && (
                 <View
                   style={{
                     position: "absolute",
@@ -109,7 +111,7 @@ export default function TabLayout() {
                   }}
                 >
                   <Text style={{ color: "white", fontSize: 8 }}>
-                    {useCartStore((state) => state.getItemCount())}
+                    {totalItems}
                   </Text>
                 </View>
               )}

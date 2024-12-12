@@ -42,21 +42,21 @@ export function CoffeeListItem({
           }}
         >
           <Text style={styles.price}>{price}$</Text>
-          <AddToCart id={id} name={name} price={price} />
+          <AddToCart id={id} name={name} price={price} type={type} />
         </View>
       </Pressable>
     </Link>
   );
 }
 
-const AddToCart = ({ id, name, price }: { id: string, name: string, price: number }) => {
+const AddToCart = ({ id, name, price, type }: { id: string, name: string, price: number, type: string }) => {
   const addItem = useCartStore((state) => state.addItem);
   
   return (
     <TouchableOpacity 
       style={styles.addToCartButton}
       onPress={() => {
-        addItem({ id, name, price });
+        addItem({ id, name, price, type });
       }}
     >
       <Plus />
