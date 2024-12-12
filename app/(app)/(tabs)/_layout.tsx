@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Tabs } from "expo-router";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -15,7 +15,7 @@ import { useCartStore } from "@/stores/useCartStore";
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const items = useCartStore((state) => state.items);
-  const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = useMemo(() => items.reduce((acc, item) => acc + item.quantity, 0), [items]);
 
   return (
     <Tabs
