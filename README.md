@@ -1,4 +1,4 @@
-# A Coffee Shop Mobile App
+# A Coffee Shop Mobile App ![Coffee](https://img.shields.io/badge/-Coffee-brown?style=flat&logo=coffeescript)
 
 A coffee shop mobile application built with React Native and Expo, currently under development. The UI is based on [this Figma design](https://www.figma.com/community/file/1116708627748807811/coffee-shop-mobile-app-design).
 
